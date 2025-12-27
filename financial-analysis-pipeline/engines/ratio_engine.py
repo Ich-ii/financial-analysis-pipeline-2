@@ -1,23 +1,26 @@
 import pandas as pd
 
-def ratio_engine(financials: pd.DataFrame) -> list:
+
+def ratio_engine(financials: pd.DataFrame) -> list[dict]:
     """
-    Deterministic Ratio Engine (AFAP Phase 2)
+    AFAP Phase 2 — Locked Deterministic Ratio Engine
+
+    Purpose:
+    - Compute financial ratios ONLY
+    - No configs
+    - No flags
+    - No explanations
+    - Fully deterministic & testable
 
     Input:
-        financials DataFrame with columns:
-        Company, Year, FS Category, FS Subcategory, Statement, Amount
+    - Standardized financial statements dataframe
 
     Output:
-        List of dictionaries:
-        - metrics
-        - flags
-        - plain-English explanations
+    - List of dicts, one per Company-Year
     """
 
     results = []
 
-    # Loop per company-year (real client structure)
     for (company, year), group in financials.groupby(["Company", "Year"]):
 
         def get_amount(category, subcategory):
@@ -27,79 +30,113 @@ def ratio_engine(financials: pd.DataFrame) -> list:
             ]
             return row["Amount"].sum() if not row.empty else None
 
-        # ---- Extract core values ----
+        # ---- Core values ----
         current_assets = get_amount("Assets", "Current Assets")
+        non_current_assets = get_amount("Assets", "Non-Current Assets")
+        inventory = get_amount("Assets", "Inventory")
+
         current_liabilities = get_amount("Liabilities", "Current Liabilities")
+        non_current_liabilities = get_amount("Liabilities", "Non-Current Liabilities")
+
         revenue = get_amount("Revenue", "Revenue")
         cogs = get_amount("Expenses", "COGS")
+        opex = get_amount("Expenses", "Operating Expenses")
+        finance_costs = get_amount("Expenses", "Finance Costs")
+        tax = get_amount("Expenses", "Tax")
+
         equity = get_amount("Equity", "Equity")
+
+        total_assets = (
+            (current_assets or 0) + (non_current_assets or 0)
+            if current_assets is not None or non_current_assets is not None
+            else None
+        )
+
         total_liabilities = (
-            get_amount("Liabilities", "Current Liabilities") or 0
-        ) + (
-            get_amount("Liabilities", "Non-Current Liabilities") or 0
-        )
-
-        # ---- Compute ratios (safe) ----
-        current_ratio = (
-            current_assets / current_liabilities
-            if current_assets is not None and current_liabilities not in (None, 0)
+            (current_liabilities or 0) + (non_current_liabilities or 0)
+            if current_liabilities is not None or non_current_liabilities is not None
             else None
         )
 
-        gross_margin = (
-            (revenue - cogs) / revenue
-            if revenue not in (None, 0) and cogs is not None
+        operating_profit = (
+            revenue - cogs - opex
+            if revenue is not None and cogs is not None and opex is not None
             else None
         )
 
-        debt_to_equity = (
-            total_liabilities / equity
-            if equity not in (None, 0)
+        net_income = (
+            operating_profit - finance_costs - tax
+            if operating_profit is not None and finance_costs is not None and tax is not None
             else None
         )
 
-        # ---- Flags ----
-        liquidity_risk = current_ratio is not None and current_ratio < 1
-        leverage_risk = debt_to_equity is not None and debt_to_equity > 2
+        # ---- Ratios (strict guards, no truthiness bugs) ----
+        ratios = {
+            "current_ratio": (
+                current_assets / current_liabilities
+                if current_assets is not None and current_liabilities not in (None, 0)
+                else None
+            ),
 
-        # ---- Explanations ----
-        explanations = {}
+            "quick_ratio": (
+                (current_assets - (inventory or 0)) / current_liabilities
+                if current_assets is not None and current_liabilities not in (None, 0)
+                else None
+            ),
 
-        if current_ratio is None:
-            explanations["current_ratio"] = "Insufficient data to assess liquidity."
-        elif liquidity_risk:
-            explanations["current_ratio"] = "Current liabilities exceed current assets."
-        else:
-            explanations["current_ratio"] = "Liquidity position appears adequate."
+            "gross_margin": (
+                (revenue - cogs) / revenue
+                if revenue not in (None, 0) and cogs is not None
+                else None
+            ),
 
-        if gross_margin is None:
-            explanations["gross_margin"] = "Revenue or cost data missing."
-        elif gross_margin < 0:
-            explanations["gross_margin"] = "Costs exceed revenue."
-        else:
-            explanations["gross_margin"] = "Core operations are generating margin."
+            "operating_margin": (
+                operating_profit / revenue
+                if operating_profit is not None and revenue not in (None, 0)
+                else None
+            ),
 
-        if debt_to_equity is None:
-            explanations["debt_to_equity"] = "Equity or liability data missing."
-        elif leverage_risk:
-            explanations["debt_to_equity"] = "Company is highly leveraged."
-        else:
-            explanations["debt_to_equity"] = "Leverage is within a reasonable range."
+            "net_margin": (
+                net_income / revenue
+                if net_income is not None and revenue not in (None, 0)
+                else None
+            ),
 
-        # ---- Final output ----
+            "debt_equity": (
+                total_liabilities / equity
+                if total_liabilities is not None and equity not in (None, 0)
+                else None
+            ),
+
+            "interest_coverage": (
+                operating_profit / finance_costs
+                if operating_profit is not None and finance_costs not in (None, 0)
+                else None
+            ),
+
+            "asset_turnover": (
+                revenue / total_assets
+                if revenue is not None and total_assets not in (None, 0)
+                else None
+            ),
+
+            "roa": (
+                net_income / total_assets
+                if net_income is not None and total_assets not in (None, 0)
+                else None
+            ),
+
+            "roe": (
+                net_income / equity
+                if net_income is not None and equity not in (None, 0)
+                else None
+            )
+        }
+
         results.append({
             "Company": company,
             "Year": year,
-            "metrics": {
-                "current_ratio": current_ratio,
-                "gross_margin": gross_margin,
-                "debt_to_equity": debt_to_equity
-            },
-            "flags": {
-                "liquidity_risk": liquidity_risk,
-                "leverage_risk": leverage_risk
-            },
-            "explanations": explanations
+            **ratios
         })
 
     return results
