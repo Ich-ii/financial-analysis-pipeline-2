@@ -1,0 +1,161 @@
+Company,Year,FS Category,FS Subcategory,Statement,Amount
+Acme Manufacturing Ltd,2020,Assets,Current Assets,Balance Sheet,3109667
+Acme Manufacturing Ltd,2020,Assets,Non-Current Assets,Balance Sheet,905812
+Acme Manufacturing Ltd,2020,Equity,Equity,Balance Sheet,2152630
+Acme Manufacturing Ltd,2020,Expenses,COGS,Income Statement,373114
+Acme Manufacturing Ltd,2020,Expenses,Finance Costs,Income Statement,2929304
+Acme Manufacturing Ltd,2020,Expenses,Operating Expenses,Income Statement,1626789
+Acme Manufacturing Ltd,2020,Expenses,Tax,Income Statement,2233681
+Acme Manufacturing Ltd,2020,Liabilities,Current Liabilities,Balance Sheet,1958670
+Acme Manufacturing Ltd,2020,Liabilities,Non-Current Liabilities,Balance Sheet,156340
+Acme Manufacturing Ltd,2020,Revenue,Revenue,Income Statement,2813225
+Acme Manufacturing Ltd,2021,Assets,Current Assets,Balance Sheet,4566127
+Acme Manufacturing Ltd,2021,Assets,Non-Current Assets,Balance Sheet,1050791
+Acme Manufacturing Ltd,2021,Equity,Equity,Balance Sheet,1600985
+Acme Manufacturing Ltd,2021,Expenses,COGS,Income Statement,629393
+Acme Manufacturing Ltd,2021,Expenses,Finance Costs,Income Statement,2366545
+Acme Manufacturing Ltd,2021,Expenses,Operating Expenses,Income Statement,2787618
+Acme Manufacturing Ltd,2021,Expenses,Tax,Income Statement,1967208
+Acme Manufacturing Ltd,2021,Liabilities,Current Liabilities,Balance Sheet,1482756
+Acme Manufacturing Ltd,2021,Liabilities,Non-Current Liabilities,Balance Sheet,692067
+Acme Manufacturing Ltd,2021,Revenue,Revenue,Income Statement,4337182
+Acme Manufacturing Ltd,2022,Assets,Current Assets,Balance Sheet,3602679
+Acme Manufacturing Ltd,2022,Assets,Non-Current Assets,Balance Sheet,914657
+Acme Manufacturing Ltd,2022,Equity,Equity,Balance Sheet,1752837
+Acme Manufacturing Ltd,2022,Expenses,COGS,Income Statement,285070
+Acme Manufacturing Ltd,2022,Expenses,Finance Costs,Income Statement,2500130
+Acme Manufacturing Ltd,2022,Expenses,Operating Expenses,Income Statement,2589044
+Acme Manufacturing Ltd,2022,Expenses,Tax,Income Statement,902603
+Acme Manufacturing Ltd,2022,Liabilities,Current Liabilities,Balance Sheet,1056215
+Acme Manufacturing Ltd,2022,Liabilities,Non-Current Liabilities,Balance Sheet,165439
+Acme Manufacturing Ltd,2022,Revenue,Revenue,Income Statement,8991008
+Acme Manufacturing Ltd,2023,Assets,Current Assets,Balance Sheet,3182212
+Acme Manufacturing Ltd,2023,Assets,Non-Current Assets,Balance Sheet,1416019
+Acme Manufacturing Ltd,2023,Equity,Equity,Balance Sheet,1447924
+Acme Manufacturing Ltd,2023,Expenses,COGS,Income Statement,2065965
+Acme Manufacturing Ltd,2023,Expenses,Finance Costs,Income Statement,2303708
+Acme Manufacturing Ltd,2023,Expenses,Operating Expenses,Income Statement,2357312
+Acme Manufacturing Ltd,2023,Expenses,Tax,Income Statement,664452
+Acme Manufacturing Ltd,2023,Liabilities,Current Liabilities,Balance Sheet,680995
+Acme Manufacturing Ltd,2023,Liabilities,Non-Current Liabilities,Balance Sheet,1456926
+Acme Manufacturing Ltd,2023,Revenue,Revenue,Income Statement,9038090
+Banyan Retail Co,2020,Assets,Current Assets,Balance Sheet,2740414
+Banyan Retail Co,2020,Assets,Non-Current Assets,Balance Sheet,135417
+Banyan Retail Co,2020,Equity,Equity,Balance Sheet,2112537
+Banyan Retail Co,2020,Expenses,COGS,Income Statement,2259810
+Banyan Retail Co,2020,Expenses,Finance Costs,Income Statement,2905778
+Banyan Retail Co,2020,Expenses,Operating Expenses,Income Statement,1163263
+Banyan Retail Co,2020,Expenses,Tax,Income Statement,1291466
+Banyan Retail Co,2020,Liabilities,Current Liabilities,Balance Sheet,1090262
+Banyan Retail Co,2020,Liabilities,Non-Current Liabilities,Balance Sheet,1122762
+Banyan Retail Co,2020,Revenue,Revenue,Income Statement,9302750
+Banyan Retail Co,2021,Assets,Current Assets,Balance Sheet,3273549
+Banyan Retail Co,2021,Assets,Non-Current Assets,Balance Sheet,198869
+Banyan Retail Co,2021,Equity,Equity,Balance Sheet,1496233
+Banyan Retail Co,2021,Expenses,COGS,Income Statement,2090786
+Banyan Retail Co,2021,Expenses,Finance Costs,Income Statement,1057569
+Banyan Retail Co,2021,Expenses,Operating Expenses,Income Statement,1479544
+Banyan Retail Co,2021,Expenses,Tax,Income Statement,758037
+Banyan Retail Co,2021,Liabilities,Current Liabilities,Balance Sheet,1919896
+Banyan Retail Co,2021,Liabilities,Non-Current Liabilities,Balance Sheet,308522
+Banyan Retail Co,2021,Revenue,Revenue,Income Statement,2169293
+Banyan Retail Co,2022,Assets,Current Assets,Balance Sheet,4390507
+Banyan Retail Co,2022,Assets,Non-Current Assets,Balance Sheet,902446
+Banyan Retail Co,2022,Equity,Equity,Balance Sheet,2160742
+Banyan Retail Co,2022,Expenses,COGS,Income Statement,1005863
+Banyan Retail Co,2022,Expenses,Finance Costs,Income Statement,2513553
+Banyan Retail Co,2022,Expenses,Operating Expenses,Income Statement,2326747
+Banyan Retail Co,2022,Expenses,Tax,Income Statement,1362128
+Banyan Retail Co,2022,Liabilities,Current Liabilities,Balance Sheet,1520247
+Banyan Retail Co,2022,Liabilities,Non-Current Liabilities,Balance Sheet,955753
+Banyan Retail Co,2022,Revenue,Revenue,Income Statement,1875039
+Banyan Retail Co,2023,Assets,Current Assets,Balance Sheet,4116171
+Banyan Retail Co,2023,Assets,Non-Current Assets,Balance Sheet,1801270
+Banyan Retail Co,2023,Equity,Equity,Balance Sheet,1982933
+Banyan Retail Co,2023,Expenses,COGS,Income Statement,2514936
+Banyan Retail Co,2023,Expenses,Finance Costs,Income Statement,2434207
+Banyan Retail Co,2023,Expenses,Operating Expenses,Income Statement,679733
+Banyan Retail Co,2023,Expenses,Tax,Income Statement,121350
+Banyan Retail Co,2023,Liabilities,Current Liabilities,Balance Sheet,835991
+Banyan Retail Co,2023,Liabilities,Non-Current Liabilities,Balance Sheet,1033268
+Banyan Retail Co,2023,Revenue,Revenue,Income Statement,2257772
+Coastal Tech Ltd,2020,Assets,Current Assets,Balance Sheet,4760055
+Coastal Tech Ltd,2020,Assets,Non-Current Assets,Balance Sheet,1346459
+Coastal Tech Ltd,2020,Equity,Equity,Balance Sheet,2386041
+Coastal Tech Ltd,2020,Expenses,COGS,Income Statement,1430855
+Coastal Tech Ltd,2020,Expenses,Finance Costs,Income Statement,1749349
+Coastal Tech Ltd,2020,Expenses,Operating Expenses,Income Statement,1566258
+Coastal Tech Ltd,2020,Expenses,Tax,Income Statement,208060
+Coastal Tech Ltd,2020,Liabilities,Current Liabilities,Balance Sheet,1789796
+Coastal Tech Ltd,2020,Liabilities,Non-Current Liabilities,Balance Sheet,437368
+Coastal Tech Ltd,2020,Revenue,Revenue,Income Statement,6000822
+Coastal Tech Ltd,2021,Assets,Current Assets,Balance Sheet,1124625
+Coastal Tech Ltd,2021,Assets,Non-Current Assets,Balance Sheet,907246
+Coastal Tech Ltd,2021,Equity,Equity,Balance Sheet,2594224
+Coastal Tech Ltd,2021,Expenses,COGS,Income Statement,329672
+Coastal Tech Ltd,2021,Expenses,Finance Costs,Income Statement,1766341
+Coastal Tech Ltd,2021,Expenses,Operating Expenses,Income Statement,2318496
+Coastal Tech Ltd,2021,Expenses,Tax,Income Statement,1940683
+Coastal Tech Ltd,2021,Liabilities,Current Liabilities,Balance Sheet,2004562
+Coastal Tech Ltd,2021,Liabilities,Non-Current Liabilities,Balance Sheet,722511
+Coastal Tech Ltd,2021,Revenue,Revenue,Income Statement,6087124
+Coastal Tech Ltd,2022,Assets,Current Assets,Balance Sheet,2508560
+Coastal Tech Ltd,2022,Assets,Non-Current Assets,Balance Sheet,1140453
+Coastal Tech Ltd,2022,Equity,Equity,Balance Sheet,286289
+Coastal Tech Ltd,2022,Expenses,COGS,Income Statement,1366480
+Coastal Tech Ltd,2022,Expenses,Finance Costs,Income Statement,722295
+Coastal Tech Ltd,2022,Expenses,Operating Expenses,Income Statement,2949941
+Coastal Tech Ltd,2022,Expenses,Tax,Income Statement,901990
+Coastal Tech Ltd,2022,Liabilities,Current Liabilities,Balance Sheet,1675327
+Coastal Tech Ltd,2022,Liabilities,Non-Current Liabilities,Balance Sheet,916172
+Coastal Tech Ltd,2022,Revenue,Revenue,Income Statement,4127492
+Coastal Tech Ltd,2023,Assets,Current Assets,Balance Sheet,4546462
+Coastal Tech Ltd,2023,Assets,Non-Current Assets,Balance Sheet,117651
+Coastal Tech Ltd,2023,Equity,Equity,Balance Sheet,2595878
+Coastal Tech Ltd,2023,Expenses,COGS,Income Statement,2761191
+Coastal Tech Ltd,2023,Expenses,Finance Costs,Income Statement,1359518
+Coastal Tech Ltd,2023,Expenses,Operating Expenses,Income Statement,951421
+Coastal Tech Ltd,2023,Expenses,Tax,Income Statement,2019557
+Coastal Tech Ltd,2023,Liabilities,Current Liabilities,Balance Sheet,1611752
+Coastal Tech Ltd,2023,Liabilities,Non-Current Liabilities,Balance Sheet,115705
+Coastal Tech Ltd,2023,Revenue,Revenue,Income Statement,3532455
+Emerald Energy Inc,2020,Assets,Current Assets,Balance Sheet,2467239
+Emerald Energy Inc,2020,Assets,Non-Current Assets,Balance Sheet,1578601
+Emerald Energy Inc,2020,Equity,Equity,Balance Sheet,1337883
+Emerald Energy Inc,2020,Expenses,COGS,Income Statement,2460659
+Emerald Energy Inc,2020,Expenses,Finance Costs,Income Statement,584221
+Emerald Energy Inc,2020,Expenses,Operating Expenses,Income Statement,1031525
+Emerald Energy Inc,2020,Expenses,Tax,Income Statement,1069445
+Emerald Energy Inc,2020,Liabilities,Current Liabilities,Balance Sheet,2500817
+Emerald Energy Inc,2020,Liabilities,Non-Current Liabilities,Balance Sheet,631504
+Emerald Energy Inc,2020,Revenue,Revenue,Income Statement,4761628
+Emerald Energy Inc,2021,Assets,Current Assets,Balance Sheet,576859
+Emerald Energy Inc,2021,Assets,Non-Current Assets,Balance Sheet,1554527
+Emerald Energy Inc,2021,Equity,Equity,Balance Sheet,2207763
+Emerald Energy Inc,2021,Expenses,COGS,Income Statement,2711802
+Emerald Energy Inc,2021,Expenses,Finance Costs,Income Statement,2820349
+Emerald Energy Inc,2021,Expenses,Operating Expenses,Income Statement,1553029
+Emerald Energy Inc,2021,Expenses,Tax,Income Statement,541705
+Emerald Energy Inc,2021,Liabilities,Current Liabilities,Balance Sheet,2146121
+Emerald Energy Inc,2021,Liabilities,Non-Current Liabilities,Balance Sheet,708959
+Emerald Energy Inc,2021,Revenue,Revenue,Income Statement,2451446
+Emerald Energy Inc,2022,Assets,Current Assets,Balance Sheet,3444087
+Emerald Energy Inc,2022,Assets,Non-Current Assets,Balance Sheet,920004
+Emerald Energy Inc,2022,Equity,Equity,Balance Sheet,1044233
+Emerald Energy Inc,2022,Expenses,COGS,Income Statement,1927819
+Emerald Energy Inc,2022,Expenses,Finance Costs,Income Statement,1149256
+Emerald Energy Inc,2022,Expenses,Operating Expenses,Income Statement,1860869
+Emerald Energy Inc,2022,Expenses,Tax,Income Statement,2883108
+Emerald Energy Inc,2022,Liabilities,Current Liabilities,Balance Sheet,864435
+Emerald Energy Inc,2022,Liabilities,Non-Current Liabilities,Balance Sheet,380986
+Emerald Energy Inc,2022,Revenue,Revenue,Income Statement,7153305
+Emerald Energy Inc,2023,Assets,Current Assets,Balance Sheet,1219080
+Emerald Energy Inc,2023,Assets,Non-Current Assets,Balance Sheet,710940
+Emerald Energy Inc,2023,Equity,Equity,Balance Sheet,1586183
+Emerald Energy Inc,2023,Expenses,COGS,Income Statement,1426510
+Emerald Energy Inc,2023,Expenses,Finance Costs,Income Statement,2316265
+Emerald Energy Inc,2023,Expenses,Operating Expenses,Income Statement,871022
+Emerald Energy Inc,2023,Expenses,Tax,Income Statement,2910611
+Emerald Energy Inc,2023,Liabilities,Current Liabilities,Balance Sheet,2012396
+Emerald Energy Inc,2023,Liabilities,Non-Current Liabilities,Balance Sheet,1365613
+Emerald Energy Inc,2023,Revenue,Revenue,Income Statement,7297364

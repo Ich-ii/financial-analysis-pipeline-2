@@ -1,0 +1,14 @@
+Account,FS Category,FS Subcategory,Statement
+Cash,Assets,Current Assets,Balance Sheet
+Accounts Receivable,Assets,Current Assets,Balance Sheet
+Inventory,Assets,Current Assets,Balance Sheet
+PPE,Assets,Non-Current Assets,Balance Sheet
+Accounts Payable,Liabilities,Current Liabilities,Balance Sheet
+Accrued Expenses,Liabilities,Current Liabilities,Balance Sheet
+Long-Term Debt,Liabilities,Non-Current Liabilities,Balance Sheet
+Equity,Equity,Equity,Balance Sheet
+Sales,Revenue,Revenue,Income Statement
+COGS,Expenses,COGS,Income Statement
+Operating Expenses,Expenses,Operating Expenses,Income Statement
+Finance Costs,Expenses,Finance Costs,Income Statement
+Tax Expense,Expenses,Tax,Income Statement

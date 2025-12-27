@@ -1,0 +1,209 @@
+Company,Year,Account,Account Type,Debit,Credit
+Acme Manufacturing Ltd,2020,Cash,Asset,224039,0
+Acme Manufacturing Ltd,2020,Accounts Receivable,Asset,1559214,0
+Acme Manufacturing Ltd,2020,Inventory,Asset,1326414,0
+Acme Manufacturing Ltd,2020,PPE,Asset,905812,0
+Acme Manufacturing Ltd,2020,Accounts Payable,Liability,0,666532
+Acme Manufacturing Ltd,2020,Accrued Expenses,Liability,0,1292138
+Acme Manufacturing Ltd,2020,Long-Term Debt,Liability,0,156340
+Acme Manufacturing Ltd,2020,Equity,Equity,0,2152630
+Acme Manufacturing Ltd,2020,Sales,Revenue,0,2813225
+Acme Manufacturing Ltd,2020,COGS,Expense,373114,0
+Acme Manufacturing Ltd,2020,Operating Expenses,Expense,1626789,0
+Acme Manufacturing Ltd,2020,Finance Costs,Expense,2929304,0
+Acme Manufacturing Ltd,2020,Tax Expense,Expense,2233681,0
+Acme Manufacturing Ltd,2021,Cash,Asset,1534222,0
+Acme Manufacturing Ltd,2021,Accounts Receivable,Asset,1449080,0
+Acme Manufacturing Ltd,2021,Inventory,Asset,1582825,0
+Acme Manufacturing Ltd,2021,PPE,Asset,1050791,0
+Acme Manufacturing Ltd,2021,Accounts Payable,Liability,0,218327
+Acme Manufacturing Ltd,2021,Accrued Expenses,Liability,0,1264429
+Acme Manufacturing Ltd,2021,Long-Term Debt,Liability,0,692067
+Acme Manufacturing Ltd,2021,Equity,Equity,0,1600985
+Acme Manufacturing Ltd,2021,Sales,Revenue,0,4337182
+Acme Manufacturing Ltd,2021,COGS,Expense,629393,0
+Acme Manufacturing Ltd,2021,Operating Expenses,Expense,2787618,0
+Acme Manufacturing Ltd,2021,Finance Costs,Expense,2366545,0
+Acme Manufacturing Ltd,2021,Tax Expense,Expense,1967208,0
+Acme Manufacturing Ltd,2022,Cash,Asset,834708,0
+Acme Manufacturing Ltd,2022,Accounts Receivable,Asset,1654385,0
+Acme Manufacturing Ltd,2022,Inventory,Asset,1113586,0
+Acme Manufacturing Ltd,2022,PPE,Asset,914657,0
+Acme Manufacturing Ltd,2022,Accounts Payable,Liability,0,692175
+Acme Manufacturing Ltd,2022,Accrued Expenses,Liability,0,364040
+Acme Manufacturing Ltd,2022,Long-Term Debt,Liability,0,165439
+Acme Manufacturing Ltd,2022,Equity,Equity,0,1752837
+Acme Manufacturing Ltd,2022,Sales,Revenue,0,8991008
+Acme Manufacturing Ltd,2022,COGS,Expense,285070,0
+Acme Manufacturing Ltd,2022,Operating Expenses,Expense,2589044,0
+Acme Manufacturing Ltd,2022,Finance Costs,Expense,2500130,0
+Acme Manufacturing Ltd,2022,Tax Expense,Expense,902603,0
+Acme Manufacturing Ltd,2023,Cash,Asset,1281745,0
+Acme Manufacturing Ltd,2023,Accounts Receivable,Asset,372196,0
+Acme Manufacturing Ltd,2023,Inventory,Asset,1528271,0
+Acme Manufacturing Ltd,2023,PPE,Asset,1416019,0
+Acme Manufacturing Ltd,2023,Accounts Payable,Liability,0,551153
+Acme Manufacturing Ltd,2023,Accrued Expenses,Liability,0,129842
+Acme Manufacturing Ltd,2023,Long-Term Debt,Liability,0,1456926
+Acme Manufacturing Ltd,2023,Equity,Equity,0,1447924
+Acme Manufacturing Ltd,2023,Sales,Revenue,0,9038090
+Acme Manufacturing Ltd,2023,COGS,Expense,2065965,0
+Acme Manufacturing Ltd,2023,Operating Expenses,Expense,2357312,0
+Acme Manufacturing Ltd,2023,Finance Costs,Expense,2303708,0
+Acme Manufacturing Ltd,2023,Tax Expense,Expense,664452,0
+Banyan Retail Co,2020,Cash,Asset,759616,0
+Banyan Retail Co,2020,Accounts Receivable,Asset,960105,0
+Banyan Retail Co,2020,Inventory,Asset,1020693,0
+Banyan Retail Co,2020,PPE,Asset,135417,0
+Banyan Retail Co,2020,Accounts Payable,Liability,0,833457
+Banyan Retail Co,2020,Accrued Expenses,Liability,0,256805
+Banyan Retail Co,2020,Long-Term Debt,Liability,0,1122762
+Banyan Retail Co,2020,Equity,Equity,0,2112537
+Banyan Retail Co,2020,Sales,Revenue,0,9302750
+Banyan Retail Co,2020,COGS,Expense,2259810,0
+Banyan Retail Co,2020,Operating Expenses,Expense,1163263,0
+Banyan Retail Co,2020,Finance Costs,Expense,2905778,0
+Banyan Retail Co,2020,Tax Expense,Expense,1291466,0
+Banyan Retail Co,2021,Cash,Asset,685359,0
+Banyan Retail Co,2021,Accounts Receivable,Asset,1815794,0
+Banyan Retail Co,2021,Inventory,Asset,772396,0
+Banyan Retail Co,2021,PPE,Asset,198869,0
+Banyan Retail Co,2021,Accounts Payable,Liability,0,720247
+Banyan Retail Co,2021,Accrued Expenses,Liability,0,1199649
+Banyan Retail Co,2021,Long-Term Debt,Liability,0,308522
+Banyan Retail Co,2021,Equity,Equity,0,1496233
+Banyan Retail Co,2021,Sales,Revenue,0,2169293
+Banyan Retail Co,2021,COGS,Expense,2090786,0
+Banyan Retail Co,2021,Operating Expenses,Expense,1479544,0
+Banyan Retail Co,2021,Finance Costs,Expense,1057569,0
+Banyan Retail Co,2021,Tax Expense,Expense,758037,0
+Banyan Retail Co,2022,Cash,Asset,1150774,0
+Banyan Retail Co,2022,Accounts Receivable,Asset,1356137,0
+Banyan Retail Co,2022,Inventory,Asset,1883596,0
+Banyan Retail Co,2022,PPE,Asset,902446,0
+Banyan Retail Co,2022,Accounts Payable,Liability,0,266211
+Banyan Retail Co,2022,Accrued Expenses,Liability,0,1254036
+Banyan Retail Co,2022,Long-Term Debt,Liability,0,955753
+Banyan Retail Co,2022,Equity,Equity,0,2160742
+Banyan Retail Co,2022,Sales,Revenue,0,1875039
+Banyan Retail Co,2022,COGS,Expense,1005863,0
+Banyan Retail Co,2022,Operating Expenses,Expense,2326747,0
+Banyan Retail Co,2022,Finance Costs,Expense,2513553,0
+Banyan Retail Co,2022,Tax Expense,Expense,1362128,0
+Banyan Retail Co,2023,Cash,Asset,1619290,0
+Banyan Retail Co,2023,Accounts Receivable,Asset,1691299,0
+Banyan Retail Co,2023,Inventory,Asset,805582,0
+Banyan Retail Co,2023,PPE,Asset,1801270,0
+Banyan Retail Co,2023,Accounts Payable,Liability,0,453842
+Banyan Retail Co,2023,Accrued Expenses,Liability,0,382149
+Banyan Retail Co,2023,Long-Term Debt,Liability,0,1033268
+Banyan Retail Co,2023,Equity,Equity,0,1982933
+Banyan Retail Co,2023,Sales,Revenue,0,2257772
+Banyan Retail Co,2023,COGS,Expense,2514936,0
+Banyan Retail Co,2023,Operating Expenses,Expense,679733,0
+Banyan Retail Co,2023,Finance Costs,Expense,2434207,0
+Banyan Retail Co,2023,Tax Expense,Expense,121350,0
+Coastal Tech Ltd,2020,Cash,Asset,1603843,0
+Coastal Tech Ltd,2020,Accounts Receivable,Asset,1584502,0
+Coastal Tech Ltd,2020,Inventory,Asset,1571710,0
+Coastal Tech Ltd,2020,PPE,Asset,1346459,0
+Coastal Tech Ltd,2020,Accounts Payable,Liability,0,723203
+Coastal Tech Ltd,2020,Accrued Expenses,Liability,0,1066593
+Coastal Tech Ltd,2020,Long-Term Debt,Liability,0,437368
+Coastal Tech Ltd,2020,Equity,Equity,0,2386041
+Coastal Tech Ltd,2020,Sales,Revenue,0,6000822
+Coastal Tech Ltd,2020,COGS,Expense,1430855,0
+Coastal Tech Ltd,2020,Operating Expenses,Expense,1566258,0
+Coastal Tech Ltd,2020,Finance Costs,Expense,1749349,0
+Coastal Tech Ltd,2020,Tax Expense,Expense,208060,0
+Coastal Tech Ltd,2021,Cash,Asset,322604,0
+Coastal Tech Ltd,2021,Accounts Receivable,Asset,528688,0
+Coastal Tech Ltd,2021,Inventory,Asset,273333,0
+Coastal Tech Ltd,2021,PPE,Asset,907246,0
+Coastal Tech Ltd,2021,Accounts Payable,Liability,0,1012552
+Coastal Tech Ltd,2021,Accrued Expenses,Liability,0,992010
+Coastal Tech Ltd,2021,Long-Term Debt,Liability,0,722511
+Coastal Tech Ltd,2021,Equity,Equity,0,2594224
+Coastal Tech Ltd,2021,Sales,Revenue,0,6087124
+Coastal Tech Ltd,2021,COGS,Expense,329672,0
+Coastal Tech Ltd,2021,Operating Expenses,Expense,2318496,0
+Coastal Tech Ltd,2021,Finance Costs,Expense,1766341,0
+Coastal Tech Ltd,2021,Tax Expense,Expense,1940683,0
+Coastal Tech Ltd,2022,Cash,Asset,1152477,0
+Coastal Tech Ltd,2022,Accounts Receivable,Asset,1129479,0
+Coastal Tech Ltd,2022,Inventory,Asset,226604,0
+Coastal Tech Ltd,2022,PPE,Asset,1140453,0
+Coastal Tech Ltd,2022,Accounts Payable,Liability,0,1198521
+Coastal Tech Ltd,2022,Accrued Expenses,Liability,0,476806
+Coastal Tech Ltd,2022,Long-Term Debt,Liability,0,916172
+Coastal Tech Ltd,2022,Equity,Equity,0,286289
+Coastal Tech Ltd,2022,Sales,Revenue,0,4127492
+Coastal Tech Ltd,2022,COGS,Expense,1366480,0
+Coastal Tech Ltd,2022,Operating Expenses,Expense,2949941,0
+Coastal Tech Ltd,2022,Finance Costs,Expense,722295,0
+Coastal Tech Ltd,2022,Tax Expense,Expense,901990,0
+Coastal Tech Ltd,2023,Cash,Asset,846630,0
+Coastal Tech Ltd,2023,Accounts Receivable,Asset,1985697,0
+Coastal Tech Ltd,2023,Inventory,Asset,1714135,0
+Coastal Tech Ltd,2023,PPE,Asset,117651,0
+Coastal Tech Ltd,2023,Accounts Payable,Liability,0,373891
+Coastal Tech Ltd,2023,Accrued Expenses,Liability,0,1237861
+Coastal Tech Ltd,2023,Long-Term Debt,Liability,0,115705
+Coastal Tech Ltd,2023,Equity,Equity,0,2595878
+Coastal Tech Ltd,2023,Sales,Revenue,0,3532455
+Coastal Tech Ltd,2023,COGS,Expense,2761191,0
+Coastal Tech Ltd,2023,Operating Expenses,Expense,951421,0
+Coastal Tech Ltd,2023,Finance Costs,Expense,1359518,0
+Coastal Tech Ltd,2023,Tax Expense,Expense,2019557,0
+Emerald Energy Inc,2020,Cash,Asset,296247,0
+Emerald Energy Inc,2020,Accounts Receivable,Asset,1136212,0
+Emerald Energy Inc,2020,Inventory,Asset,1034780,0
+Emerald Energy Inc,2020,PPE,Asset,1578601,0
+Emerald Energy Inc,2020,Accounts Payable,Liability,0,1494277
+Emerald Energy Inc,2020,Accrued Expenses,Liability,0,1006540
+Emerald Energy Inc,2020,Long-Term Debt,Liability,0,631504
+Emerald Energy Inc,2020,Equity,Equity,0,1337883
+Emerald Energy Inc,2020,Sales,Revenue,0,4761628
+Emerald Energy Inc,2020,COGS,Expense,2460659,0
+Emerald Energy Inc,2020,Operating Expenses,Expense,1031525,0
+Emerald Energy Inc,2020,Finance Costs,Expense,584221,0
+Emerald Energy Inc,2020,Tax Expense,Expense,1069445,0
+Emerald Energy Inc,2021,Cash,Asset,94288,0
+Emerald Energy Inc,2021,Accounts Receivable,Asset,256978,0
+Emerald Energy Inc,2021,Inventory,Asset,225593,0
+Emerald Energy Inc,2021,PPE,Asset,1554527,0
+Emerald Energy Inc,2021,Accounts Payable,Liability,0,1091868
+Emerald Energy Inc,2021,Accrued Expenses,Liability,0,1054253
+Emerald Energy Inc,2021,Long-Term Debt,Liability,0,708959
+Emerald Energy Inc,2021,Equity,Equity,0,2207763
+Emerald Energy Inc,2021,Sales,Revenue,0,2451446
+Emerald Energy Inc,2021,COGS,Expense,2711802,0
+Emerald Energy Inc,2021,Operating Expenses,Expense,1553029,0
+Emerald Energy Inc,2021,Finance Costs,Expense,2820349,0
+Emerald Energy Inc,2021,Tax Expense,Expense,541705,0
+Emerald Energy Inc,2022,Cash,Asset,1019793,0
+Emerald Energy Inc,2022,Accounts Receivable,Asset,1407824,0
+Emerald Energy Inc,2022,Inventory,Asset,1016470,0
+Emerald Energy Inc,2022,PPE,Asset,920004,0
+Emerald Energy Inc,2022,Accounts Payable,Liability,0,274334
+Emerald Energy Inc,2022,Accrued Expenses,Liability,0,590101
+Emerald Energy Inc,2022,Long-Term Debt,Liability,0,380986
+Emerald Energy Inc,2022,Equity,Equity,0,1044233
+Emerald Energy Inc,2022,Sales,Revenue,0,7153305
+Emerald Energy Inc,2022,COGS,Expense,1927819,0
+Emerald Energy Inc,2022,Operating Expenses,Expense,1860869,0
+Emerald Energy Inc,2022,Finance Costs,Expense,1149256,0
+Emerald Energy Inc,2022,Tax Expense,Expense,2883108,0
+Emerald Energy Inc,2023,Cash,Asset,220917,0
+Emerald Energy Inc,2023,Accounts Receivable,Asset,718052,0
+Emerald Energy Inc,2023,Inventory,Asset,280111,0
+Emerald Energy Inc,2023,PPE,Asset,710940,0
+Emerald Energy Inc,2023,Accounts Payable,Liability,0,1443989
+Emerald Energy Inc,2023,Accrued Expenses,Liability,0,568407
+Emerald Energy Inc,2023,Long-Term Debt,Liability,0,1365613
+Emerald Energy Inc,2023,Equity,Equity,0,1586183
+Emerald Energy Inc,2023,Sales,Revenue,0,7297364
+Emerald Energy Inc,2023,COGS,Expense,1426510,0
+Emerald Energy Inc,2023,Operating Expenses,Expense,871022,0
+Emerald Energy Inc,2023,Finance Costs,Expense,2316265,0
+Emerald Energy Inc,2023,Tax Expense,Expense,2910611,0
