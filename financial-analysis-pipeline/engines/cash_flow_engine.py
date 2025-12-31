@@ -1,115 +1,87 @@
-import numpy as np
 import pandas as pd
 
-def anomaly_efficiency_engine(ratios_df: pd.DataFrame) -> list:
+def cash_flow_engine(financials: pd.DataFrame) -> list:
     """
-    Detects anomalies and efficiency signals using ratio behavior only.
-    Expects multi-year ratio data sorted by Company, Year.
+    AFAP Phase 2 — Cash Flow Health Engine (Proxy-Based)
+
+    Assesses sustainability using operating profit consistency
+    and coverage proxies when cash flow statements are unavailable.
     """
 
-    ratios_df = ratios_df.sort_values(["Company", "Year"])
     results = []
 
-    for company, group in ratios_df.groupby("Company"):
-        group = group.reset_index(drop=True)
+    for (company, year), group in financials.groupby(["Company", "Year"]):
 
-        for i, row in group.iterrows():
-            anomalies = []
-            efficiency_flags = {}
+        def get_amount(category, subcategory):
+            row = group[
+                (group["FS Category"] == category) &
+                (group["FS Subcategory"] == subcategory)
+            ]
+            return row["Amount"].sum() if not row.empty else None
 
-            if i == 0:
-                results.append({
-                    "engine": "anomaly_efficiency_engine",
-                    "Company": company,
-                    "Year": row["Year"],
-                    "anomalies": None,
-                    "flags": None,
-                    "severity": "info",
-                    "explanation": "Insufficient historical data for anomaly detection."
-                })
-                continue
+        revenue = get_amount("Revenue", "Revenue")
+        cogs = get_amount("Expenses", "COGS")
+        opex = get_amount("Expenses", "Operating Expenses")
+        finance_costs = get_amount("Expenses", "Finance Costs")
 
-            prev = group.loc[i - 1]
+        operating_profit = (
+            revenue - cogs - opex
+            if None not in (revenue, cogs, opex)
+            else None
+        )
 
-            # ---- YoY anomaly detection ----
-            def pct_change(curr, prev):
-                if prev == 0 or pd.isna(prev):
-                    return None
-                return (curr - prev) / abs(prev)
+        coverage_proxy = (
+            operating_profit / finance_costs
+            if operating_profit is not None and finance_costs not in (None, 0)
+            else None
+        )
 
-            ratio_checks = {
-                "operating_margin": 0.30,
-                "net_margin": 0.30,
-                "roa": 0.30,
-                "roe": 0.30,
-                "debt_equity": 0.25,
-                "asset_turnover": 0.25
-            }
-
-            yoy_changes = {}
-
-            for ratio, threshold in ratio_checks.items():
-                change = pct_change(row[ratio], prev[ratio])
-                yoy_changes[ratio] = change
-
-                if change is not None and abs(change) >= threshold:
-                    anomalies.append(f"Sharp change detected in {ratio.replace('_',' ')}.")
-
-            # ---- Structural efficiency logic ----
-            efficiency_flags["liquidity_vs_profitability"] = (
-                row["current_ratio"] > 2.0 and row["net_margin"] < 0
+        # ---- Flags ----
+        flags = {
+            "negative_operating_profit": (
+                operating_profit is not None and operating_profit < 0
+            ),
+            "weak_coverage": (
+                coverage_proxy is not None and coverage_proxy < 1
             )
+        }
 
-            efficiency_flags["activity_without_returns"] = (
-                row["asset_turnover"] > prev["asset_turnover"]
-                and row["roa"] < 0
-            )
+        # ---- Severity ----
+        if all(flags.values()):
+            severity = "action"
+        elif any(flags.values()):
+            severity = "watch"
+        else:
+            severity = "stable"
 
-            efficiency_flags["leverage_pressure"] = (
-                row["debt_equity"] > prev["debt_equity"]
-                and row["interest_coverage"] < 1.0
-            )
-
-            # ---- Severity logic ----
-            anomaly_count = len(anomalies)
-            flag_count = sum(efficiency_flags.values())
-
-            if anomaly_count + flag_count >= 3:
-                severity = "action"
-            elif anomaly_count + flag_count >= 1:
-                severity = "watch"
-            else:
-                severity = "stable"
-
-            # ---- Explanation ----
-            explanation_parts = []
-
-            if anomalies:
-                explanation_parts.append("Unusual year-over-year ratio movements detected.")
-
-            if efficiency_flags["liquidity_vs_profitability"]:
-                explanation_parts.append("Strong liquidity exists alongside weak profitability.")
-
-            if efficiency_flags["activity_without_returns"]:
-                explanation_parts.append("Operational activity is not translating into asset returns.")
-
-            if efficiency_flags["leverage_pressure"]:
-                explanation_parts.append("Leverage is increasing while coverage remains weak.")
-
+        # ---- Explanation ----
+        if severity == "action":
             explanation = (
-                " ".join(explanation_parts)
-                if explanation_parts
-                else "No significant anomalies or efficiency concerns detected."
+                "Operating activities do not appear to generate sufficient "
+                "cash to cover financing obligations."
+            )
+        elif severity == "watch":
+            explanation = (
+                "Cash generation shows signs of pressure and warrants monitoring."
+            )
+        else:
+            explanation = (
+                "Operating activities appear sufficient to sustain financing needs."
             )
 
-            results.append({
-                "engine": "anomaly_efficiency_engine",
-                "Company": company,
-                "Year": row["Year"],
-                "anomalies": anomalies if anomalies else None,
-                "flags": efficiency_flags,
-                "severity": severity,
-                "explanation": explanation
-            })
+        results.append({
+            "engine": "cash_flow_engine",
+            "Company": company,
+            "Year": year,
+            "metrics": {
+                "operating_profit": operating_profit,
+                "coverage_proxy": coverage_proxy
+            },
+            "flags": {
+                **flags,
+                "severity": severity
+            },
+            "explanation": explanation
+        })
 
     return results
