@@ -4,95 +4,86 @@ def composite_risk_engine(
     cashflow_results,
     anomaly_results,
     solvency_results,
-    weights=None
+    client_config=None
 ):
-    """
-    Produces a composite risk score per Company-Year
-    """
+    DEFAULT_WEIGHTS = {
+        "ratio_engine": 0.25,
+        "trend_engine": 0.20,
+        "cash_flow_engine": 0.20,
+        "anomaly_efficiency_engine": 0.20,
+        "solvency_engine": 0.15
+    }
 
-    if weights is None:
-        weights = {
-            "ratios": 0.20,
-            "trends": 0.15,
-            "cashflow": 0.25,
-            "anomalies": 0.20,
-            "solvency": 0.20
-        }
+    SEVERITY_MAP = {
+        "stable": 0,
+        "normal": 0,
+        "low": 10,
+        "watch": 30,
+        "medium": 50,
+        "high": 70,
+        "action": 90
+    }
+
+    weights = DEFAULT_WEIGHTS.copy()
+    if client_config and "risk_weights" in client_config:
+        weights.update(client_config["risk_weights"])
+
+    # --- Index all engine outputs ---
+    all_engines = (
+        ratio_results
+        + trend_results
+        + cashflow_results
+        + anomaly_results
+        + solvency_results
+    )
+
+    index = {}
+    for r in all_engines:
+        key = (r["Company"], r["Year"])
+        index.setdefault(key, []).append(r)
 
     results = []
 
-    # Index results by Company-Year
-    def index_results(data):
-        return {
-            (r["Company"], r["Year"]): r
-            for r in data
-        }
+    for (company, year), records in index.items():
+        total_score = 0
+        total_weight = 0
+        drivers = []
 
-    ratio_idx = index_results(ratio_results)
-    trend_idx = index_results(trend_results)
-    cashflow_idx = index_results(cashflow_results)
-    anomaly_idx = index_results(anomaly_results)
-    solvency_idx = index_results(solvency_results)
+        breakdown = {}
 
-    keys = set(
-        ratio_idx.keys()
-        & trend_idx.keys()
-        & cashflow_idx.keys()
-        & anomaly_idx.keys()
-        & solvency_idx.keys()
-    )
+        for r in records:
+            engine = r["engine"]
+            severity = r.get("severity") or r.get("flags", {}).get("severity", "normal")
 
-    for company, year in keys:
-        score = 0
-        components = {}
+            score = SEVERITY_MAP.get(severity, 0)
+            weight = weights.get(engine, 0)
 
-        # --- Ratios ---
-        ratio_status = ratio_idx[(company, year)].get("status", "normal")
-        ratio_score = 1 if ratio_status == "weak" else 0
-        components["ratios"] = ratio_score
-        score += ratio_score * weights["ratios"]
+            weighted_score = score * weight
 
-        # --- Trends ---
-        trend_flags = trend_idx[(company, year)].get("trend_flags", {})
-        trend_score = sum(trend_flags.values()) / max(len(trend_flags), 1)
-        components["trends"] = trend_score
-        score += trend_score * weights["trends"]
+            breakdown[engine] = weighted_score
+            total_score += weighted_score
+            total_weight += weight
 
-        # --- Cash Flow ---
-        cf_status = cashflow_idx[(company, year)].get("cashflow_health", "healthy")
-        cf_score = 1 if cf_status == "weak" else 0
-        components["cashflow"] = cf_score
-        score += cf_score * weights["cashflow"]
+            if score >= 50:
+                drivers.append(r["explanation"])
 
-        # --- Anomalies ---
-        anomaly_sev = anomaly_idx[(company, year)].get("severity", "normal")
-        anomaly_score = 1 if anomaly_sev == "high" else 0.5 if anomaly_sev == "watch" else 0
-        components["anomalies"] = anomaly_score
-        score += anomaly_score * weights["anomalies"]
+        normalized_score = round(total_score / total_weight, 1) if total_weight else 0
 
-        # --- Solvency ---
-        solvency_risk = solvency_idx[(company, year)].get("risk_level", "low")
-        solvency_score = 1 if solvency_risk == "high" else 0.5 if solvency_risk == "medium" else 0
-        components["solvency"] = solvency_score
-        score += solvency_score * weights["solvency"]
-
-        # Normalize to 0–100
-        final_score = round(score * 100, 1)
-
-        if final_score >= 70:
-            tier = "High Risk"
-        elif final_score >= 40:
-            tier = "Moderate Risk"
+        if normalized_score >= 70:
+            overall_risk = "high"
+        elif normalized_score >= 40:
+            overall_risk = "medium"
         else:
-            tier = "Low Risk"
+            overall_risk = "low"
 
         results.append({
             "engine": "composite_risk_engine",
             "Company": company,
             "Year": year,
-            "risk_score": final_score,
-            "risk_tier": tier,
-            "components": components
+            "overall_risk": overall_risk,
+            "risk_score": normalized_score,
+            "risk_breakdown": breakdown,
+            "key_drivers": drivers
         })
 
     return results
