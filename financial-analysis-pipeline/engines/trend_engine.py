@@ -1,10 +1,16 @@
 import pandas as pd
+from .schema_validator import validate_engine_output
 
-def trend_engine(ratios_df: pd.DataFrame) -> list:
+def trend_engine(ratios_list):
     """
-    Calculates YoY trends and volatility for ratio metrics.
-    Expects a flat ratios DataFrame.
+    AFAP Phase 3 — Locked Trend Engine
+    Evaluates directional trends in key financial ratios.
     """
+
+    df = pd.DataFrame(ratios_list)
+
+    if df.empty:
+        return []
 
     results = []
 
@@ -12,47 +18,52 @@ def trend_engine(ratios_df: pd.DataFrame) -> list:
         "current_ratio",
         "gross_margin",
         "net_margin",
-        "debt_equity",
         "asset_turnover",
-        "roa",
+        "debt_equity",
         "roe"
     ]
 
-    for company, grp in ratios_df.groupby("Company"):
+    for company, grp in df.groupby("Company"):
         grp = grp.sort_values("Year")
 
-        for _, row in grp.iterrows():
-            year = row["Year"]
+        if len(grp) < 2:
+            continue  # cannot compute trend
 
-            trends = {}
+        start_year = int(grp.iloc[0]["Year"])
+        end_year = int(grp.iloc[-1]["Year"])
 
-            prev = grp[grp["Year"] == year - 1]
+        for ratio in ratios:
+            if ratio not in grp.columns:
+                continue
 
-            for r in ratios:
-                if not prev.empty:
-                    prev_val = prev.iloc[0][r]
-                    curr_val = row[r]
+            trend_value = grp[ratio].iloc[-1] - grp[ratio].iloc[0]
 
-                    if pd.notna(prev_val) and pd.notna(curr_val):
-                        trends[r] = {
-                            "value": curr_val,
-                            "yoy_change": curr_val - prev_val,
-                            "trend": (
-                                "up" if curr_val > prev_val
-                                else "down" if curr_val < prev_val
-                                else "flat"
-                            )
-                        }
-                    else:
-                        trends[r] = None
-                else:
-                    trends[r] = None
+            flags = {
+                "deteriorating_trend": trend_value < 0
+            }
+
+            severity = (
+                "watch" if trend_value < 0 else "stable"
+            )
 
             results.append({
                 "engine": "trend_engine",
                 "Company": company,
-                "Year": year,
-                "trends": trends
+                "Year": end_year,  # 🔑 anchor to most recent year
+                "metrics": {
+                    "ratio": ratio,
+                    "trend_value": trend_value,
+                    "from_year": start_year,
+                    "to_year": end_year
+                },
+                "flags": flags,
+                "severity": severity,
+                "explanation": (
+                    f"Negative trend observed in {ratio}."
+                    if severity == "watch"
+                    else f"{ratio} trend stable or improving."
+                )
             })
 
+    validate_engine_output(results, "trend_engine")
     return results

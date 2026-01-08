@@ -1,50 +1,60 @@
 import pandas as pd
+from .schema_validator import validate_engine_output
 
-DEFAULT_CONFIG = {
-    "debt_equity_max": 1.5,
-    "interest_coverage_min": 1.5,
-    "roa_min": 0.05,
-    "roe_min": 0.10
-}
+def solvency_engine(ratios_list):
+    """
+    AFAP Phase 3 — Locked Solvency Engine
+    Evaluates capital structure and coverage metrics.
+    """
 
-def solvency_engine(ratios_df: pd.DataFrame, config: dict | None = None) -> list:
-    cfg = DEFAULT_CONFIG.copy()
-    if config:
-        cfg.update(config)
-    
+    # Convert input to DataFrame
+    df = pd.DataFrame(ratios_list)
+
+    if df.empty:
+        return []
+
+    required_cols = ["Company", "Year", "debt_equity", "interest_coverage"]
+    missing = [c for c in required_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"Missing columns: {missing}")
+
     results = []
-    
-    for _, row in ratios_df.iterrows():
-        flags = {
-            "leverage_risk": row["debt_equity"] > cfg["debt_equity_max"],
-            "coverage_risk": row["interest_coverage"] < cfg["interest_coverage_min"],
-            "return_risk": (row["roa"] < cfg["roa_min"]) or (row["roe"] < cfg["roe_min"])
-        }
-        
-        risk_count = sum(flags.values())
-        severity = "stable" if risk_count == 0 else "watch" if risk_count == 1 else "action"
-        
-        explanation_parts = []
-        if flags["leverage_risk"]: explanation_parts.append("Debt levels are high.")
-        if flags["coverage_risk"]: explanation_parts.append("Interest coverage is weak.")
-        if flags["return_risk"]: explanation_parts.append("Returns on assets or equity are below expectations.")
-        explanation = " ".join(explanation_parts) if explanation_parts else "Solvency indicators are healthy."
-        
-        results.append({
-            "engine": "solvency_engine",
-            "Company": row["Company"],
-            "Year": row["Year"],
-            "metrics": {
-                "debt_equity": row["debt_equity"],
-                "interest_coverage": row["interest_coverage"],
-                "roa": row["roa"],
-                "roe": row["roe"]
-            },
-            "flags": {
-                **flags,
-                "severity": severity
-            },
-            "explanation": explanation
-        })
-    
+
+    for company, grp in df.groupby("Company"):
+        grp = grp.sort_values("Year")
+
+        for _, row in grp.iterrows():
+            flags = {
+                "high_leverage": row["debt_equity"] > 1.5,
+                "weak_coverage": row["interest_coverage"] < 1.5
+            }
+
+            count = sum(flags.values())
+
+            severity = (
+                "action" if count == 2
+                else "watch" if count == 1
+                else "stable"
+            )
+
+            results.append({
+                "engine": "solvency_engine",
+                "Company": company,
+                "Year": int(row["Year"]),
+                "metrics": {
+                    "debt_equity": row["debt_equity"],
+                    "interest_coverage": row["interest_coverage"]
+                },
+                "flags": flags,
+                "severity": severity,
+                "explanation": (
+                    "Capital structure shows solvency risk."
+                    if severity != "stable"
+                    else "Solvency position acceptable."
+                )
+            })
+
+    # ✅ Schema validation stays INSIDE the engine
+    validate_engine_output(results, "solvency_engine")
+
     return results

@@ -1,6 +1,7 @@
 # engines/engine_interfaces.py
 
 ENGINE_SCHEMAS = {
+
     "ratio_engine": {
         "required_keys": {"engine", "Company", "Year", "metrics"},
         "metrics": {
@@ -18,27 +19,37 @@ ENGINE_SCHEMAS = {
     },
 
     "trend_engine": {
-        "required_keys": {"engine", "Company", "Year", "trends"},
+        "required_keys": {
+            "engine", "Company", "Year",
+            "metrics", "flags", "severity", "explanation"
+        }
     },
 
     "cash_flow_engine": {
-        "required_keys": {"engine", "Company", "Year", "metrics", "flags", "explanation"},
-        "metrics": {"operating_profit", "coverage_proxy"},
-        "flags": {"negative_operating_profit", "weak_coverage", "severity"}
+        "required_keys": {
+            "engine", "Company", "Year",
+            "metrics", "flags", "severity", "explanation"
+        }
     },
 
     "anomaly_efficiency_engine": {
-        "required_keys": {"engine", "Company", "Year", "metrics", "flags", "severity", "explanation"},
+        "required_keys": {
+            "engine", "Company", "Year",
+            "metrics", "flags", "severity", "explanation"
+        }
     },
 
     "solvency_engine": {
-        "required_keys": {"engine", "Company", "Year", "metrics", "flags", "severity", "explanation"},
+        "required_keys": {
+            "engine", "Company", "Year",
+            "metrics", "flags", "severity", "explanation"
+        }
     },
 
     "composite_risk_engine": {
         "required_keys": {
             "engine", "Company", "Year",
-            "risk_score", "risk_tier", "components"
+            "composite_score", "risk_band"
         }
     }
 }

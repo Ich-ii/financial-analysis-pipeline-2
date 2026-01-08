@@ -1,10 +1,9 @@
-import pandas as pd
-
 def composite_risk_engine(
     trend_results,
     cash_results,
     anomaly_results,
-    solvency_results
+    solvency_results,
+    config
 ):
     def index(results):
         return {(r["Company"], r["Year"]): r for r in results}
@@ -14,27 +13,36 @@ def composite_risk_engine(
     a = index(anomaly_results)
     s = index(solvency_results)
 
+    weights = config["risk_weights"]
+    bands = config["risk_bands"]
+
     rows = []
 
-    keys = set(t) | set(c) | set(a) | set(s)
-
-    for company, year in keys:
+    for key in t.keys():
         score = 0
 
-        if c.get((company, year), {}).get("flags", {}).get("severity") == "watch":
-            score += 20
+        if c.get(key, {}).get("severity") == "watch":
+            score += weights["cash_flow"]
 
-        if a.get((company, year), {}).get("severity") == "high":
-            score += 20
+        if a.get(key, {}).get("severity") == "high":
+            score += weights["anomaly"]
 
-        if s.get((company, year), {}).get("severity") == "action":
-            score += 30
+        if s.get(key, {}).get("severity") == "action":
+            score += weights["solvency"]
 
-        band = "high" if score >= 50 else "medium" if score >= 25 else "low"
+        if t.get(key, {}).get("severity") == "watch":
+            score += weights["trend"]
+
+        if score >= bands["high"]:
+            band = "high"
+        elif score >= bands["medium"]:
+            band = "medium"
+        else:
+            band = "low"
 
         rows.append({
-            "Company": company,
-            "Year": year,
+            "Company": key[0],
+            "Year": key[1],
             "composite_score": score,
             "risk_band": band
         })

@@ -1,92 +1,62 @@
 import pandas as pd
+from .schema_validator import validate_engine_output
 
+def anomaly_efficiency_engine(ratios_list):
+    """
+    AFAP Phase 3 — Locked Efficiency Anomaly Engine
+    Detects abnormal ROA changes year-over-year.
+    """
 
-def anomaly_efficiency_engine(df: pd.DataFrame) -> list:
-    """
-    Detects anomalies and efficiency issues using ratio-based signals only.
-    Input: ratio_engine_core output as DataFrame
-    """
+    df = pd.DataFrame(ratios_list)
+
+    if df.empty:
+        return []
+
+    required_cols = ["Company", "Year", "roa"]
+    missing = [c for c in required_cols if c not in df.columns]
+    if missing:
+        raise ValueError(f"Missing columns: {missing}")
 
     results = []
 
-    df = (
-        df.sort_values(["Company", "Year"])
-        .copy()
-    )
+    for company, grp in df.groupby("Company"):
+        grp = grp.sort_values("Year").reset_index(drop=True)
+        grp["roa_yoy"] = grp["roa"].pct_change()
 
-    # --- YoY changes on ratios ---
-    ratio_cols = [
-        "operating_margin",
-        "net_margin",
-        "asset_turnover",
-        "roa",
-        "roe"
-    ]
+        for _, row in grp.iterrows():
+            flags = {
+                "roa_shock": (
+                    row["roa_yoy"] < -0.4
+                    if pd.notna(row["roa_yoy"])
+                    else False
+                )
+            }
 
-    for col in ratio_cols:
-        df[f"{col}_yoy"] = df.groupby("Company")[col].pct_change()
+            count = sum(flags.values())
 
-    for _, row in df.iterrows():
-
-        flags = {
-            "margin_anomaly": (
-                row["operating_margin"] < df["operating_margin"].mean() * 0.7
-            ),
-
-            "profitability_shock": (
-                row["net_margin_yoy"] < -0.30
-                if pd.notna(row["net_margin_yoy"])
-                else False
-            ),
-
-            "efficiency_drop": (
-                row["asset_turnover_yoy"] < -0.25
-                if pd.notna(row["asset_turnover_yoy"])
-                else False
-            ),
-
-            "roa_shock": (
-                row["roa_yoy"] < -0.40
-                if pd.notna(row["roa_yoy"])
-                else False
-            ),
-
-            "roe_stress": (
-                row["roe"] < 0
+            severity = (
+                "high" if count >= 2
+                else "watch" if count == 1
+                else "normal"
             )
-        }
 
-        anomaly_count = sum(flags.values())
+            results.append({
+                "engine": "anomaly_efficiency_engine",
+                "Company": row["Company"],
+                "Year": int(row["Year"]),
+                "metrics": {
+                    "roa_yoy": row["roa_yoy"]
+                },
+                "flags": flags,
+                "severity": severity,
+                "explanation": (
+                    "Abnormal efficiency change detected."
+                    if severity != "normal"
+                    else "Efficiency metrics stable."
+                )
+            })
 
-        if anomaly_count >= 2:
-            severity = "high"
-        elif anomaly_count == 1:
-            severity = "watch"
-        else:
-            severity = "normal"
-
-        explanation = (
-            "Multiple efficiency or profitability anomalies detected across periods."
-            if severity == "high"
-            else "Some operational ratios show abnormal movement."
-            if severity == "watch"
-            else "Efficiency and profitability ratios appear stable."
-        )
-
-        results.append({
-            "engine": "anomaly_efficiency_engine",
-            "Company": row["Company"],
-            "Year": row["Year"],
-            "metrics": {
-                "operating_margin_yoy": row["operating_margin_yoy"],
-                "net_margin_yoy": row["net_margin_yoy"],
-                "asset_turnover_yoy": row["asset_turnover_yoy"],
-                "roa_yoy": row["roa_yoy"],
-                "roe": row["roe"]
-            },
-            "flags": flags,
-            "severity": severity,
-            "explanation": explanation
-        })
+    # ✅ Validation MUST be inside the function
+    validate_engine_output(results, "anomaly_efficiency_engine")
 
     return results
