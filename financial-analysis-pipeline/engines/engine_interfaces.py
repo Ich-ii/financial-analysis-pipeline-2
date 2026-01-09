@@ -18,6 +18,16 @@ ENGINE_SCHEMAS = {
         }
     },
 
+    "ratio_engine_eval": {
+        "required_keys": {
+            "engine", "Company", "Year",
+            "current_ratio", "quick_ratio", "gross_margin", "operating_margin",
+            "net_margin", "debt_equity", "interest_coverage", "asset_turnover",
+            "roa", "roe",
+            "metrics", "flags", "explanation"
+        }
+    },
+
     "trend_engine": {
         "required_keys": {
             "engine", "Company", "Year",

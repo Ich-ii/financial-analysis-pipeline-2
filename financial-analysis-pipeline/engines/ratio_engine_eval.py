@@ -94,27 +94,41 @@ def evaluate_ratios(input_df: pd.DataFrame, config: dict | None = None) -> list[
             )
 
             results.append({
-                "engine": "ratio_engine",
-                "Company": company,
-                "Year": int(row["Year"]),
-                "metrics": {
-                    "current_ratio": row["current_ratio"],
-                    "quick_ratio": row["quick_ratio"],
-                    "gross_margin": row["gross_margin"],
-                    "operating_margin": row["operating_margin"],
-                    "net_margin": row["net_margin"],
-                    "debt_equity": row["debt_equity"],
-                    "interest_coverage": row["interest_coverage"],
-                    "asset_turnover": row["asset_turnover"],
-                    "roa": row["roa"],
-                    "roe": row["roe"]
-                },
-                "flags": {
-                    **flags,
-                    "severity": severity
-                },
-                "explanation": explanation
-            })
+    "engine": "ratio_engine",
+    "Company": company,
+    "Year": int(row["Year"]),
+
+    # 🔹 expose ratios as real columns
+    "current_ratio": row["current_ratio"],
+    "quick_ratio": row["quick_ratio"],
+    "gross_margin": row["gross_margin"],
+    "operating_margin": row["operating_margin"],
+    "net_margin": row["net_margin"],
+    "debt_equity": row["debt_equity"],
+    "interest_coverage": row["interest_coverage"],
+    "asset_turnover": row["asset_turnover"],
+    "roa": row["roa"],
+    "roe": row["roe"],
+
+    # 🔹 keep metrics dict for schema validation
+    "metrics": {
+        "current_ratio": row["current_ratio"],
+        "quick_ratio": row["quick_ratio"],
+        "gross_margin": row["gross_margin"],
+        "operating_margin": row["operating_margin"],
+        "net_margin": row["net_margin"],
+        "debt_equity": row["debt_equity"],
+        "interest_coverage": row["interest_coverage"],
+        "asset_turnover": row["asset_turnover"],
+        "roa": row["roa"],
+        "roe": row["roe"]
+    },
+
+    "flags": {**flags, "severity": severity},
+    "explanation": explanation
+})
+
+
 
     validate_engine_output(results, "ratio_engine_eval")
     return results
