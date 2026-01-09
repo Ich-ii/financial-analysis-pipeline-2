@@ -1,11 +1,10 @@
 import pandas as pd
+from .schema_validator import validate_engine_output
 
 def cash_flow_engine(financials: pd.DataFrame) -> list:
     """
-    AFAP Phase 2 — Cash Flow Health Engine (Proxy-Based)
-
-    Assesses sustainability using operating profit consistency
-    and coverage proxies when cash flow statements are unavailable.
+    AFAP Phase 3 — Cash Flow Health Engine
+    Produces top-level severity for composite risk scoring.
     """
 
     results = []
@@ -36,7 +35,7 @@ def cash_flow_engine(financials: pd.DataFrame) -> list:
             else None
         )
 
-        # ---- Flags ----
+        # Flags
         flags = {
             "negative_operating_profit": (
                 operating_profit is not None and operating_profit < 0
@@ -46,7 +45,7 @@ def cash_flow_engine(financials: pd.DataFrame) -> list:
             )
         }
 
-        # ---- Severity ----
+        # Top-level severity
         if all(flags.values()):
             severity = "action"
         elif any(flags.values()):
@@ -54,21 +53,16 @@ def cash_flow_engine(financials: pd.DataFrame) -> list:
         else:
             severity = "stable"
 
-        # ---- Explanation ----
-        if severity == "action":
-            explanation = (
-                "Operating activities do not appear to generate sufficient "
-                "cash to cover financing obligations."
-            )
-        elif severity == "watch":
-            explanation = (
-                "Cash generation shows signs of pressure and warrants monitoring."
-            )
-        else:
-            explanation = (
-                "Operating activities appear sufficient to sustain financing needs."
-            )
+        # Explanation
+        explanation = (
+            "Operating activities do not appear to generate sufficient cash to cover financing obligations."
+            if severity == "action"
+            else "Cash generation shows signs of pressure and warrants monitoring."
+            if severity == "watch"
+            else "Operating activities appear sufficient to sustain financing needs."
+        )
 
+        # ✅ Append AFAP Phase-3 compliant row
         results.append({
             "engine": "cash_flow_engine",
             "Company": company,
@@ -77,11 +71,11 @@ def cash_flow_engine(financials: pd.DataFrame) -> list:
                 "operating_profit": operating_profit,
                 "coverage_proxy": coverage_proxy
             },
-            "flags": {
-                **flags,
-                "severity": severity
-            },
+            "flags": flags,           # severity removed from flags
+            "severity": severity,     # ✅ top-level
             "explanation": explanation
         })
 
+    # ✅ Validation inside the function
+    validate_engine_output(results, "cash_flow_engine")
     return results

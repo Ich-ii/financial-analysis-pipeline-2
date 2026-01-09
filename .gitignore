@@ -1,6 +1,6 @@
 # Virtual environments
-fsa_env/
-**/fsa_env/
+afap_env/
+**/afap_env_env/
 
 # VS Code
 .vscode/
