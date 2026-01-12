@@ -24,9 +24,13 @@ def solvency_engine(ratios_list):
         grp = grp.sort_values("Year")
 
         for _, row in grp.iterrows():
+            # Safely extract metrics
+            debt_equity = row.get("debt_equity")
+            interest_coverage = row.get("interest_coverage")
+
             flags = {
-                "high_leverage": row["debt_equity"] > 1.5,
-                "weak_coverage": row["interest_coverage"] < 1.5
+                "high_leverage": debt_equity is not None and debt_equity > 1.5,
+                "weak_coverage": interest_coverage is not None and interest_coverage < 1.5
             }
 
             count = sum(flags.values())
@@ -42,8 +46,8 @@ def solvency_engine(ratios_list):
                 "Company": company,
                 "Year": int(row["Year"]),
                 "metrics": {
-                    "debt_equity": row["debt_equity"],
-                    "interest_coverage": row["interest_coverage"]
+                    "debt_equity": debt_equity,
+                    "interest_coverage": interest_coverage
                 },
                 "flags": flags,
                 "severity": severity,
