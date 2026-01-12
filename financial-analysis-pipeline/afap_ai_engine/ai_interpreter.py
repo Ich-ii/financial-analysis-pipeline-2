@@ -49,7 +49,6 @@ def afap_llm_interpretation(structured_records, model="gpt-5-mini", temperature=
         response = client.responses.create(
             model=model,
             reasoning={"effort": "low"},
-            max_output_tokens=600,
             input=messages
         )
 
