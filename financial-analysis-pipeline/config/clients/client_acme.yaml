@@ -1,0 +1,33 @@
+client_name: "Acme Corp"
+
+default_profile: "full_diagnostic"
+
+inputs:
+  data_path: "data/cleaned/financial_statements.csv"
+
+engines:
+  composite_risk:
+    trend_weight: 0.25
+    cash_flow_weight: 0.25
+    anomaly_weight: 0.25
+    solvency_weight: 0.25
+
+analysis:
+  # Composite risk engine expects these keys
+  risk_weights:
+    trend: 0.25
+    cash_flow: 0.25
+    anomaly: 0.25
+    solvency: 0.25
+  risk_bands:
+    low: 0.25
+    medium: 0.5
+    high: 0.75
+
+outputs:
+  save_reports: true
+  report_path: "outputs/client_runs/acme/"
+
+features_enabled:
+  - liquidity_analysis
+  - cash_flow_forecast

@@ -1,8 +1,8 @@
-def merge_config(default, override):
-    merged = default.copy()
-    for k, v in override.items():
-        if isinstance(v, dict):
-            merged[k] = {**default.get(k, {}), **v}
+def merge_config(defaults, overrides):
+    merged = defaults.copy()
+    for k, v in overrides.items():
+        if isinstance(v, dict) and isinstance(merged.get(k), dict):
+            merged[k] = merge_config(merged[k], v)
         else:
-            merged[k] = v
+            merged[k] = v  # replace completely if not both dicts
     return merged

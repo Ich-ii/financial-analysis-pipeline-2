@@ -68,18 +68,28 @@ def extract_engine_payload(engine_outputs, company, year):
 def afap_run(financials_df, client_config=None, analysis_profile="full_diagnostic", use_mock_ai=False):
     """
     Runs AFAP analysis for a given financials DataFrame and profile.
-    use_mock_ai: if True, generates mock AI outputs instantly for testing.
     """
-    # ---- Merge client config ----
-    config = merge_config(DEFAULT_CLIENT_CONFIG, client_config or {})
 
-    # ---- Validate profile ----
+    # ------------------------------------------------------------------
+    # Merge client config with defaults
+    # ------------------------------------------------------------------
+    merged_config = merge_config(DEFAULT_CLIENT_CONFIG, client_config or {})
+
+    # 🔑 Analysis-level config (this is what engines consume)
+    analysis_config = merged_config.get("analysis", {})
+
+    # ------------------------------------------------------------------
+    # Validate profile
+    # ------------------------------------------------------------------
     profile = ANALYSIS_PROFILES.get(analysis_profile)
     if not profile:
         raise ValueError(f"Unknown analysis profile: {analysis_profile}")
+
     engines_to_run = profile["engines"]
 
-    # ---- Import engines ----
+    # ------------------------------------------------------------------
+    # Import engines
+    # ------------------------------------------------------------------
     from engines.ratio_engine_core import ratio_engine
     from engines.trend_engine import trend_engine
     from engines.cash_flow_engine import cash_flow_engine
@@ -87,10 +97,14 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     from engines.solvency_engine import solvency_engine
     from engines.composite_risk_engine import composite_risk_engine
 
-    # ---- Import AI Interpreter ----
+    # ------------------------------------------------------------------
+    # Import AI Interpreter
+    # ------------------------------------------------------------------
     from afap_ai_engine.ai_interpreter import afap_llm_interpretation
 
-    # ---- Initialize all output keys ----
+    # ------------------------------------------------------------------
+    # Initialize outputs
+    # ------------------------------------------------------------------
     outputs = {k: [] for k in AFAP_OUTPUT_KEYS if k != "profile_used"}
 
     # ------------------------------------------------------------------
@@ -99,11 +113,14 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     if "ratio" in engines_to_run:
         ratios_list = ratio_engine(financials_df)
         outputs["ratios"] = ratios_list
+
         ratios_df = pd.DataFrame([
-            {"Company": r["Company"], "Year": r["Year"], **r["metrics"]} for r in ratios_list
+            {"Company": r["Company"], "Year": r["Year"], **r["metrics"]}
+            for r in ratios_list
         ])
     else:
         ratios_df = pd.DataFrame()
+
     ratios_flat = ratios_df.copy()
 
     # ------------------------------------------------------------------
@@ -111,19 +128,23 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     # ------------------------------------------------------------------
     if "trend" in engines_to_run:
         outputs["trend"] = trend_engine(ratios_flat)
+
     if "cash_flow" in engines_to_run:
         outputs["cash_flow"] = cash_flow_engine(financials_df)
+
     if "anomaly" in engines_to_run:
         outputs["anomaly"] = anomaly_efficiency_engine(ratios_flat)
+
     if "solvency" in engines_to_run:
         outputs["solvency"] = solvency_engine(ratios_flat)
+
     if "composite_risk" in engines_to_run:
         outputs["composite_risk"] = composite_risk_engine(
             outputs.get("trend", []),
             outputs.get("cash_flow", []),
             outputs.get("anomaly", []),
             outputs.get("solvency", []),
-            config
+            analysis_config   # ✅ FIX: pass analysis-level config only
         )
 
     # ------------------------------------------------------------------
@@ -133,6 +154,7 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     for _, row in ratios_df.iterrows():
         company = row["Company"]
         year = row["Year"]
+
         record = {
             "Company": company,
             "Year": year,
@@ -143,13 +165,13 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
             "solvency": extract_engine_payload(outputs.get("solvency", []), company, year),
             "composite_risk": extract_engine_payload(outputs.get("composite_risk", []), company, year)
         }
+
         structured_records.append(record)
 
     # ------------------------------------------------------------------
     # LLM Interpretation
     # ------------------------------------------------------------------
     if use_mock_ai:
-        # Fast mock output for testing
         outputs["ai_interpretation"] = [
             {"Company": r["Company"], "Year": r["Year"], "interpretation": "MOCK"}
             for r in structured_records
