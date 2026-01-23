@@ -13,8 +13,9 @@ def composite_risk_engine(
     a = index(anomaly_results)
     s = index(solvency_results)
 
-    weights = config["risk_weights"]
-    bands = config["risk_bands"]
+    analysis_cfg = config["analysis"]
+    weights = analysis_cfg["risk_weights"]
+    bands = analysis_cfg["risk_bands"]
 
     rows = []
 
