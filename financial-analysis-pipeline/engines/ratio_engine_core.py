@@ -1,5 +1,7 @@
 import pandas as pd
 from .schema_validator import validate_engine_output
+from engines.data_normalizer import normalize_financial_df
+
 
 def ratio_engine(input_df: pd.DataFrame) -> list[dict]:
     """
@@ -11,10 +13,10 @@ def ratio_engine(input_df: pd.DataFrame) -> list[dict]:
         "Company",
         "Year",
         "FS Category",
-        "FS Subcategory",
+        "FS Subcategory", 
         "Amount"
     ]
-
+    input_df = normalize_financial_df(input_df)
     missing = [c for c in required_cols if c not in input_df.columns]
     if missing:
         raise ValueError(f"Missing columns: {missing}")

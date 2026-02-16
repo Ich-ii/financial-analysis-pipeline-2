@@ -1,11 +1,16 @@
 import pandas as pd
 from .schema_validator import validate_engine_output
+from .data_normalizer import normalize_financial_df  # ✅ import normalizer
 
 def cash_flow_engine(financials: pd.DataFrame) -> list:
     """
     AFAP Phase 3 — Cash Flow Health Engine
     Produces top-level severity for composite risk scoring.
+    Automatically normalizes raw Amount data.
     """
+
+    # ✅ Normalize financials at the start
+    financials = normalize_financial_df(financials)
 
     results = []
 
@@ -71,8 +76,8 @@ def cash_flow_engine(financials: pd.DataFrame) -> list:
                 "operating_profit": operating_profit,
                 "coverage_proxy": coverage_proxy
             },
-            "flags": flags,           # severity removed from flags
-            "severity": severity,     # ✅ top-level
+            "flags": flags,
+            "severity": severity,
             "explanation": explanation
         })
 

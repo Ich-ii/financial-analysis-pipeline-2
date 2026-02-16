@@ -140,12 +140,13 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
 
     if "composite_risk" in engines_to_run:
         outputs["composite_risk"] = composite_risk_engine(
-            outputs.get("trend", []),
-            outputs.get("cash_flow", []),
-            outputs.get("anomaly", []),
-            outputs.get("solvency", []),
-            analysis_config   # ✅ FIX: pass analysis-level config only
-        )
+    outputs.get("trend", []),
+    outputs.get("cash_flow", []),
+    outputs.get("anomaly", []),
+    outputs.get("solvency", []),
+    {"analysis": analysis_config}  # ✅ wrap it
+)
+
 
     # ------------------------------------------------------------------
     # Structured Records for LLM (Profile-Aware)
