@@ -1,7 +1,7 @@
 import pandas as pd
 from .schema_validator import validate_engine_output
 from engines.data_normalizer import normalize_financial_df
-
+from engines.ratio_validator import validate_ratios
 
 def ratio_engine(input_df: pd.DataFrame) -> list[dict]:
     """
@@ -128,7 +128,8 @@ def ratio_engine(input_df: pd.DataFrame) -> list[dict]:
                     else None
                 )
             }
-
+# Validation gate
+            metrics = validate_ratios(metrics, company, year)
             results.append({
                 "engine": "ratio_engine",
                 "Company": company,
@@ -140,4 +141,5 @@ def ratio_engine(input_df: pd.DataFrame) -> list[dict]:
             })
 
     validate_engine_output(results, "ratio_engine")
+    
     return results
