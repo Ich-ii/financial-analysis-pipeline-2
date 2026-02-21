@@ -1,62 +1,69 @@
 from openai import OpenAI
-from afap_ai_engine.prompt_builder import build_afap_prompt  # optional, can inline if you want
+from afap_ai_engine.prompt_builder import build_afap_prompt
+import unicodedata
 
-# Use environment variable for API key
 client = OpenAI()
 
-def afap_llm_interpretation(structured_records, model="gpt-5-mini", temperature=0.2, analysis_profile=None):
+
+def afap_llm_interpretation(
+    structured_records,
+    model="gpt-5-mini",
+):
     """
     Wraps OpenAI API call for AFAP interpretation.
-    Returns a list of dicts: one per record
+
+    Expected structure per record:
+    {
+        "Company": str,
+        "Year": int,
+        "financials": {...},
+        "analysis_profile": str | None,
+        "temporal_mode": str | None,
+        "context": {
+            "macro": {...},
+            "industry": {...},
+            "event_flags": {...}
+        }
+    }
+
+    Returns:
+        List[dict] — one interpretation per record
     """
+
     interpretations = []
 
     for record in structured_records:
-        # Build prompt (you can inline your notebook prompt logic here)
-        messages = [
-            {
-                "role": "system",
-                "content": (
-                    "You are a conservative financial analyst producing professional, "
-                    "client-facing audit-grade reports. "
-                    "Use cautious language. Do not speculate. "
-                    "Do not invent metrics, trends, or assumptions."
-                )
-            },
-            {
-                "role": "user",
-                "content": (
-                    f"ANALYSIS PROFILE:\n{analysis_profile}\n\n"
-                    f"COMPANY: {record['Company']}\nYEAR: {record['Year']}\n\n"
-                    f"RATIOS:\n" +
-                    "\n".join([f"- {k}: {v}" for k, v in record["ratios"].items()]) + "\n\n"
-                    f"COMPOSITE RISK:\n" +
-                    "\n".join([f"- {k}: {v}" for k, v in record.get("composite_risk", {}).items()]) + "\n\n"
-                    "RULES:\n"
-                    "- Follow the output schema exactly\n"
-                    "- Explicitly highlight metrics exceeding conservative thresholds\n"
-                    "- Use audit-appropriate language\n"
-                    "- Do not invent metrics, ratios, or trends\n\n"
-                    "OUTPUT SCHEMA:\n"
-                    "- summary\n"
-                    "- key_risks\n"
-                    "- recommendations\n"
-                    "- confidence_notes"
-                )
-            }
-        ]
+
+        # Ensure structured context exists (avoid KeyError downstream)
+        record.setdefault("context", {})
+        record.setdefault("analysis_profile", None)
+        record.setdefault("temporal_mode", None)
+
+        # 🔑 Unified prompt builder handles ALL interpretation logic
+        messages = build_afap_prompt(record)
 
         response = client.responses.create(
             model=model,
-            reasoning={"effort": "low"},
             input=messages
         )
 
+        # -------------------------------
+        # CLEAN AND NORMALIZE OUTPUT
+        # -------------------------------
+        raw_text = response.output_text
+        clean_text = unicodedata.normalize("NFKD", raw_text)
+        clean_text = clean_text.encode("utf-8", "ignore").decode("utf-8")
+
+        # -------------------------------
+        # APPEND INTERPRETATION
+        # -------------------------------
         interpretations.append({
-            "Company": record["Company"],
-            "Year": record["Year"],
+            "Company": record.get("Company"),
+            "Year": record.get("Year"),
             "analysis_profile": record.get("analysis_profile"),
-            "interpretation": response.output_text
+            "temporal_mode": record.get("temporal_mode"),
+            "context_used": record.get("context"),
+            "interpretation": clean_text
         })
 
     return interpretations

@@ -13,9 +13,10 @@ AFAP_OUTPUT_KEYS = [
     "ai_interpretation"
 ]
 
+from datetime import datetime
+import pandas as pd
 from config.defaults import DEFAULT_CLIENT_CONFIG
 from config.utils import merge_config
-import pandas as pd
 
 # ------------------------------------------------------------------
 # Analysis Profiles (AIFs – AFAP Interpretation Frameworks)
@@ -65,7 +66,13 @@ def extract_engine_payload(engine_outputs, company, year):
 # AFAP Orchestrator
 # ------------------------------------------------------------------
 
-def afap_run(financials_df, client_config=None, analysis_profile="full_diagnostic", use_mock_ai=False):
+def afap_run(
+    financials_df,
+    client_config=None,
+    analysis_profile="full_diagnostic",
+    external_context=None,
+    use_mock_ai=False
+):
     """
     Runs AFAP analysis for a given financials DataFrame and profile.
     """
@@ -74,8 +81,6 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     # Merge client config with defaults
     # ------------------------------------------------------------------
     merged_config = merge_config(DEFAULT_CLIENT_CONFIG, client_config or {})
-
-    # 🔑 Analysis-level config (this is what engines consume)
     analysis_config = merged_config.get("analysis", {})
 
     # ------------------------------------------------------------------
@@ -88,7 +93,7 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     engines_to_run = profile["engines"]
 
     # ------------------------------------------------------------------
-    # Import engines
+    # Import Engines
     # ------------------------------------------------------------------
     from engines.ratio_engine_core import ratio_engine
     from engines.trend_engine import trend_engine
@@ -103,24 +108,17 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     from afap_ai_engine.ai_interpreter import afap_llm_interpretation
 
     # ------------------------------------------------------------------
-    # Initialize outputs
+    # Initialize Outputs
     # ------------------------------------------------------------------
     outputs = {k: [] for k in AFAP_OUTPUT_KEYS if k != "profile_used"}
 
     # ------------------------------------------------------------------
-    # Ratio Engine (canonical base)
+    # Ratio Engine (Canonical Base)
     # ------------------------------------------------------------------
-    if "ratio" in engines_to_run:
-        ratios_list = ratio_engine(financials_df)
-        outputs["ratios"] = ratios_list
+    ratios_list = ratio_engine(financials_df) if "ratio" in engines_to_run else []
+    outputs["ratios"] = ratios_list
 
-        ratios_df = pd.DataFrame([
-            {"Company": r["Company"], "Year": r["Year"], **r["metrics"]}
-            for r in ratios_list
-        ])
-    else:
-        ratios_df = pd.DataFrame()
-
+    ratios_df = pd.DataFrame([{"Company": r["Company"], "Year": r["Year"], **r["metrics"]} for r in ratios_list]) if ratios_list else pd.DataFrame()
     ratios_flat = ratios_df.copy()
 
     # ------------------------------------------------------------------
@@ -140,25 +138,42 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
 
     if "composite_risk" in engines_to_run:
         outputs["composite_risk"] = composite_risk_engine(
-    outputs.get("trend", []),
-    outputs.get("cash_flow", []),
-    outputs.get("anomaly", []),
-    outputs.get("solvency", []),
-    {"analysis": analysis_config}  # ✅ wrap it
-)
-
+            outputs.get("trend", []),
+            outputs.get("cash_flow", []),
+            outputs.get("anomaly", []),
+            outputs.get("solvency", []),
+            {"analysis": analysis_config}
+        )
 
     # ------------------------------------------------------------------
-    # Structured Records for LLM (Profile-Aware)
+    # Structured Records for LLM (Profile + Temporal + Context Aware)
     # ------------------------------------------------------------------
     structured_records = []
+    current_year = datetime.now().year
+
+    # Wrap flat external_context under "global" for LLM
+    external_context = {"global": external_context or {}}
+
     for _, row in ratios_df.iterrows():
         company = row["Company"]
         year = row["Year"]
+        temporal_mode = "real_time" if year == current_year else "retrospective"
+
+        # Resolve contextual layer (priority: Company+Year > Year > global)
+        context_payload = {}
+        if (company, year) in external_context:
+            context_payload = external_context[(company, year)]
+        elif year in external_context:
+            context_payload = external_context[year]
+        elif "global" in external_context:
+            context_payload = external_context["global"]
 
         record = {
             "Company": company,
             "Year": year,
+            "analysis_profile": analysis_profile,
+            "temporal_mode": temporal_mode,
+            "context": context_payload,  # LLM uses this
             "ratios": {k: row[k] for k in row.index if k not in ("Company", "Year")},
             "trend": extract_engine_payload(outputs.get("trend", []), company, year),
             "cash_flow": extract_engine_payload(outputs.get("cash_flow", []), company, year),
@@ -174,18 +189,23 @@ def afap_run(financials_df, client_config=None, analysis_profile="full_diagnosti
     # ------------------------------------------------------------------
     if use_mock_ai:
         outputs["ai_interpretation"] = [
-            {"Company": r["Company"], "Year": r["Year"], "interpretation": "MOCK"}
+            {
+                "Company": r["Company"],
+                "Year": r["Year"],
+                "analysis_profile": r["analysis_profile"],
+                "temporal_mode": r["temporal_mode"],
+                "interpretation": "MOCK"
+            }
             for r in structured_records
         ]
     else:
         outputs["ai_interpretation"] = afap_llm_interpretation(
             structured_records,
-            model="gpt-5-mini",
-            analysis_profile=analysis_profile
+            model="gpt-5-mini"
         )
 
     # ------------------------------------------------------------------
-    # Profile used
+    # Profile Used
     # ------------------------------------------------------------------
     outputs["profile_used"] = analysis_profile
 
